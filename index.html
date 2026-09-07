@@ -58,6 +58,18 @@
 
     code.inline { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .95em; background: rgba(148,163,184,.15); padding: .1em .35em; border-radius: 6px; }
 
+    .delete-form-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+    .delete-form input[type="tel"] {
+      flex: 1 1 240px; padding: 12px 14px; border-radius: 10px; border: 1px solid rgba(148,163,184,.35);
+      background: rgba(255,255,255,.04); color: var(--text); font-size: 15px;
+    }
+    .delete-form input[type="tel"]:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--ring); }
+    .delete-form button {
+      padding: 12px 20px; border-radius: 10px; border: none; background: var(--accent); color: #fff;
+      font-size: 15px; font-weight: 600; cursor: pointer;
+    }
+    .delete-form button:hover { background: #d92d2d; }
+
     footer { margin-top: 40px; color: var(--muted); font-size: 14px; }
     footer a { color: var(--muted); }
 
@@ -90,6 +102,7 @@
     <nav class="toc" aria-label="Table of contents">
       <h2>Contents</h2>
       <ol>
+        <li><a href="#account-deletion">Request Account Deletion</a></li>
         <li><a href="#info-we-collect">Information We Collect</a></li>
         <li><a href="#use-and-sharing">Use &amp; Sharing of Information</a></li>
         <li><a href="#sharing-scenarios">Information Sharing Scenarios</a></li>
@@ -101,6 +114,19 @@
         <li><a href="#location">Location</a></li>
       </ol>
     </nav>
+
+    <section id="account-deletion" class="card">
+      <h2>Request Account Deletion</h2>
+      <p>To request deletion of your Bounce Daily account and associated data, enter the mobile number registered on your account below. This will open an email to our Data Protection Officer with your request pre-filled — just hit send.</p>
+      <form id="delete-account-form" class="delete-form">
+        <label for="delete-phone" class="meta">Registered mobile number</label>
+        <div class="delete-form-row">
+          <input type="tel" id="delete-phone" name="phone" inputmode="numeric" pattern="[6-9][0-9]{9}" maxlength="10" placeholder="10-digit mobile number" required />
+          <button type="submit">Request Deletion</button>
+        </div>
+      </form>
+      <p class="meta">This opens your email app addressed to <a href="mailto:dpo@bounceshare.com">dpo@bounceshare.com</a>. We process deletion requests in accordance with our <a href="#contact">Grievance Officer</a> process.</p>
+    </section>
 
     <section id="info-we-collect" class="card">
       <h2>1. Information We Collect</h2>
@@ -206,6 +232,16 @@
       <p>&copy; <span id="y"></span> Bounce Daily. All rights reserved.</p>
       <script>
         document.getElementById('y').textContent = new Date().getFullYear();
+
+        document.getElementById('delete-account-form').addEventListener('submit', function (e) {
+          e.preventDefault();
+          var phone = document.getElementById('delete-phone').value.trim();
+          var subject = encodeURIComponent('Account Deletion Request');
+          var body = encodeURIComponent(
+            'Please delete my Bounce Daily account and associated data.\n\nRegistered mobile number: ' + phone
+          );
+          window.location.href = 'mailto:dpo@bounceshare.com?subject=' + subject + '&body=' + body;
+        });
       </script>
     </footer>
   </div>
